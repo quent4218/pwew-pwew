@@ -24,9 +24,12 @@ function init()
 
     noGround = [];
     ground = new Ground(0xffffff, WIDTH, HEIGHT, 10);
-    
-    player1 = new Player("player1", 0xffff00, new THREE.Vector2(50, 0), 0);
+
+    player1 = new Player("player1", 0xffff00, new THREE.Vector2(0, 0), 0);
     scene.add(player1.graphic);
+
+    player2 = new Player("player2", 0xfffff0, new THREE.Vector2(50, 50), 0);
+    scene.add(player2.graphic);
 
     light1 = new Light("sun", 0xffffff, "0,0,340");
     scene.add(light1);
@@ -39,7 +42,7 @@ function Ground(color, size_x, size_y, nb_tile)
     sizeOfTileX = size_x / nb_tile;
     minX = -(size_x/2);
     maxX = (size_x/2);
-    
+
     sizeOfTileY = size_y / nb_tile;
     minY = -(size_y/2);
     maxY = (size_y/2);
@@ -48,8 +51,21 @@ function Ground(color, size_x, size_y, nb_tile)
         for (y = minY; y <= maxY; y = y+sizeOfTileY){
 
             color = colors[Math.floor(Math.random()*colors.length)];
-       
-            if (0x000000 != color)
+            if (x == (maxX + minX) / 2 && y == (maxY + minY) / 2)
+            {
+              console.log("middle")
+              while(color == 0x000000)
+              {
+                color = colors[Math.floor(Math.random()*colors.length)];
+              }
+              tmpGround = new THREE.Mesh(
+              new THREE.PlaneGeometry(sizeOfTileX-10, sizeOfTileY-10),
+              new THREE.MeshLambertMaterial({color: color, transparent: true, opacity: 0.6}));
+              tmpGround.position.x = x;
+              tmpGround.position.y = y;
+              scene.add(tmpGround);
+            }
+            else if (0x000000 != color)
             {
                 tmpGround = new THREE.Mesh(
                 new THREE.PlaneGeometry(sizeOfTileX-10, sizeOfTileY-10),
@@ -66,7 +82,7 @@ function Ground(color, size_x, size_y, nb_tile)
 
 function Light(name, color, position)
 {
-    pointLight = new THREE.PointLight(color, 50, 350);
+    pointLight = new THREE.PointLight(color, 50, 0);
 
     pointLight.position.x = position.split(',')[0];
     pointLight.position.y = position.split(',')[1];

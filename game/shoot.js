@@ -2,7 +2,7 @@ var bulletTime1 = 0;
 
 var bullet_player1_material = new THREE.MeshLambertMaterial(
 {
-    color: 0x00ff00, 
+    color: 0x00ff00,
     transparent: false
 });
 
@@ -19,7 +19,7 @@ function shoot()
         bullet.angle = player1.direction;
         player1.bullets.push(bullet);
         bulletTime1 = clock.getElapsedTime();
-    } 
+    }
 
     // move bullets
     var moveDistance = 5;
@@ -51,6 +51,13 @@ function bullet_collision()
             player1.bullets.splice(i, 1);
             i--;
         }
+        console.log("X: " + Math.abs(player1.bullets[i].position.x - player2.position.x))
+        console.log("Y: " + Math.abs(Math.abs(player1.bullets[i].position.y) - Math.abs(player2.position.y)))
+        if (Math.abs(player1.bullets[i].position.x - player2.position.x) < 30 && Math.abs(player1.bullets[i].position.y - player2.position.y) < 30)
+        {
+          console.log("BOOOOOOOOOOOOOOOOOOOOM")
+          scene.remove(player2);
+        }
     }
 
 }
@@ -63,6 +70,8 @@ function player_collision()
 
     if ( x > WIDTH )
         player1.graphic.position.x -= x - WIDTH;
+    if ( x < 0 )
+        player1.graphic.position.x -= x;
     if ( y < 0 )
         player1.graphic.position.y -= y;
     if ( y > HEIGHT )
@@ -90,7 +99,7 @@ function player_falling()
 
         if ((x > tileX)
             && (x < mtileX)
-            && (y > tileY) 
+            && (y > tileY)
             && (y < mtileY))
         {
             player1.dead();
