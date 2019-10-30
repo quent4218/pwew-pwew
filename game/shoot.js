@@ -56,7 +56,7 @@ function bullet_collision()
         if (Math.abs(player1.bullets[i].position.x - player2.position.x) < 30 && Math.abs(player1.bullets[i].position.y - player2.position.y) < 30)
         {
           console.log("BOOOOOOOOOOOOOOOOOOOOM")
-          scene.remove(player2);
+          scene.remove(player2.graphic);
         }
     }
 
